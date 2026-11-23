@@ -1,3 +1,4 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: normalize line endings for cross-platform checks
 /**
  * 由后端 Java 枚举生成前端常量 src/constants/enums.js
  *
@@ -114,7 +115,7 @@ export function collect() {
     for (const file of walk(join(REPO, root))) {
       if (!file.includes(`${sep}src${sep}main${sep}java${sep}`)) continue
       const simple = file.split(sep).pop().slice(0, -5)
-      const raw = readFileSync(file, 'utf8')
+      const raw = readFileSync(file, 'utf8').replace(/\r\n?/g, '\n')
       if (!new RegExp(`\\benum\\s+${simple}\\b`).test(raw)) continue
       const code = stripComments(raw)
       // JSON 取值不是常量名（@JsonValue），按名字生成会与接口数据不一致
@@ -174,7 +175,7 @@ const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(import.me
 if (isMain) {
   const content = render(collect())
   if (process.argv.includes('--check')) {
-    const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : ''
+    const current = existsSync(OUT) ? readFileSync(OUT, 'utf8').replace(/\r\n?/g, '\n') : ''
     if (current !== content) {
       console.error('src/constants/enums.js 与后端枚举不一致，请运行 npm run gen:enums')
       process.exit(1)

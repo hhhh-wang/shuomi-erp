@@ -19,6 +19,7 @@ FROM nginx:1.27.5-alpine
 ENV TZ=Asia/Shanghai
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /web/dist /usr/share/nginx/html
+COPY LICENSE /usr/share/nginx/html/LICENSE
 EXPOSE 80
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=5 \
     CMD wget -q -O /dev/null http://127.0.0.1/healthz || exit 1

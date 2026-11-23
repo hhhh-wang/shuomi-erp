@@ -11,7 +11,7 @@
 - 已更名为 `hhhh-wang/shuomi-erp`，继续保留 fork 及 `upstream`。
 - `main` 是产品主线，功能使用 `feature/*`，上游同步使用 `sync/upstream-YYYYMMDD`，按需使用 `release/*`。
 - 本次交付分支：`feature/shuomi-production-deployment`；部署、校验脚本通用修复、品牌集中配置和说明分别提交。
-- 发布标签统一为 `shuomi-vX.Y.Z-N`。本次不凭示例版本号创建发布标签。
+- 发布标签统一为 `shuomi-vX.Y.Z-N`，版本号依据源码版本确定。当前版本与发布状态见 [GitHub Releases](https://github.com/hhhh-wang/shuomi-erp/releases)。
 
 ## 本次改动范围
 
@@ -26,6 +26,7 @@
 | 说明和私有文件边界 | `.gitignore`、`.dockerignore`、`docs/production-*.md` | 记录部署/更新方法，排除真实凭据和运维实值 |
 | 品牌集中配置 | `lemon-web/src/branding.js`、两端 Vite 配置和相关语言包 | 共用默认值，保留运行时系统名/租户名覆盖与 Logo |
 | 品牌和发布归属 | `README.md`、`docs/upstream-sync.md`、`.github/workflows/release.yml` | 标记二开、保留上游、统一硕米标签与对外发布名 |
+| 发布验收与分发 | `scripts/github-release.mjs`、`release.yml`、镜像与 JAR 配置 | 草稿完整性、文件 SHA256、双架构镜像 digest、发布防覆盖及许可证副本 |
 
 代码或脚本的定制位置使用上述标记注释；此表记录整体范围。生产账号、密码、JWT/AI 密钥及证书私钥使用本机/服务器私有文件，不进入提交、构建上下文或发布包。实际部署详情保存为忽略文件 `docker/production-status.private.md`。
 
@@ -43,6 +44,7 @@
 - 品牌集中配置：`07add2a0`。
 - 本次部署验收见[生产部署验收记录](production-status.md)；镜像/配置验证与本轮文档和发布规则检查分别记录。
 - 本轮校验：两个 workflow YAML 解析、15 段 Shell 语法、6 组标签接受/拒绝与版本映射检查通过；Web/小程序 i18n、枚举与两端构建通过，产物品牌标题保持一致；提交内容未匹配实际私有凭据。
+- 发布收尾：修复 Windows 脚本中部 BOM，三份脚本通过真实 PowerShell 5.1 语法解析；CI 同时检查 PowerShell 和发布脚本语法。产物记录将构建固定到同一源提交并在发布时验证标签、SHA256 和双架构镜像摘要。
 - GitHub CI 包含后端 `gradlew build`（包含测试任务）、前端与小程序构建、多语言/枚举检查，以及 PR 中的 Docker 构建。`main` 要求对应四项检查通过，结果以当前 PR 和 Actions 为准。
 
 ## 后续上游同步

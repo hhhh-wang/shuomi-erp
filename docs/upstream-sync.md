@@ -134,10 +134,15 @@ git switch main
 git pull --ff-only origin main
 git tag -a shuomi-v1.2.0-1 -m "硕米ERP 1.2.0 (1)"
 git push origin shuomi-v1.2.0-1
-gh release create shuomi-v1.2.0-1 --title "硕米ERP 1.2.0 (1)" --generate-notes
+gh release create shuomi-v1.2.0-1 --draft --title "硕米ERP 1.2.0 (1)" --generate-notes
+gh workflow run release.yml --ref shuomi-v1.2.0-1 -f tag=shuomi-v1.2.0-1
+# 等待 Actions 成功，验收 release-ready.json、SHA256SUMS.txt、部署包与镜像
+gh release edit shuomi-v1.2.0-1 --draft=false
 ```
 
-发布 Release 后触发 `.github/workflows/release.yml`。工作流校验硕米标签，去掉 `shuomi-v` 得到镜像版本 `1.2.0-1`，使用 `shuomi-erp-backend`、`shuomi-erp-web` 和同名部署包。官方 `v*` Release 不触发硕米发布任务。首次带前缀的标签尚未创建；版本号需要按实际发布决定，示例不代表已发布。
+创建草稿后手动运行 `.github/workflows/release.yml`，并将运行 ref 与 `tag` 输入设为同一标签。工作流校验硕米标签，去掉 `shuomi-v` 得到镜像版本 `1.2.0-1`，构建 `shuomi-erp-backend`、`shuomi-erp-web` 的双架构镜像及同名部署包。完成记录 `release-ready.json` 包含源提交、资产校验和和镜像 digest；发布事件只重新核验这份记录，不覆盖已验收产物。官方 `v*` Release 不进入硕米发布流程。当前版本以 [GitHub Releases](https://github.com/hhhh-wang/shuomi-erp/releases) 和标签为准，以上版本号仅为操作示例。
+
+同一标签只准备一次完整产物，不更新 `latest`。重复手动运行时，已有完整记录会触发核验并跳过构建；若只有部分资产或镜像，流程停止，使用新的硕米修订号继续发布，不覆盖旧标签。
 
 本地离线导出脚本的 `-ReleaseTag` 是 Docker 镜像标签，也可使用同一规范化版本，例如 `1.2.0-1`；已有 `release-20261123-203650` 镜像与归档继续可用。
 

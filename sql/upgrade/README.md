@@ -1,6 +1,10 @@
 # 数据库升级脚本
 
-`sql/init.sql` 始终是最新版本的完整建表与初始数据脚本，**全新安装只执行 init.sql**，不需要执行这里的脚本。
+<!-- SHUOMI-ERP PRIVATE CUSTOMIZATION: separate test initialization from production bootstrap -->
+
+`sql/init.sql` 是最新版本的完整建表与演示数据脚本，仅供**全新本地/测试安装**使用，这类安装不需要执行这里的升级脚本。
+
+生产空库首次初始化使用 `sql/production-bootstrap.sql`，由人工确认目标数据库和空库状态后执行；管理员及 Flowable 初始化步骤见[生产部署说明](../../docs/production-deployment.md)。已有生产数据库按对应版本执行审核后的升级脚本。
 
 已经在使用的数据库升级到新版本时，按文件名（日期）顺序执行**部署之后**新增的脚本。所有脚本都可以重复执行，已经执行过的部分会自动跳过，不确定是否执行过时直接再执行一次即可。
 

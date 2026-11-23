@@ -1,7 +1,7 @@
 {
-  "name": "柠檬ERP",
+  "name": "硕米ERP",
   "appid": "",
-  "description": "柠檬ERP 移动端：审批、员工自助、销售外勤、扫码作业",
+  "description": "硕米ERP 移动端：审批、员工自助、销售外勤、扫码作业",
   "versionName": "1.1.1",
   "versionCode": "111",
   "locale": "zh-Hans",
@@ -20,7 +20,7 @@
     }
   },
   "h5": {
-    "title": "Lemon ERP",
+    "title": "Shuomi ERP",
     "router": {
       "mode": "hash"
     }

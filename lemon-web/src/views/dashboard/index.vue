@@ -661,7 +661,7 @@ onMounted(async () => {
 </style>
 
 <style>
-/* 暗色：欢迎条的柠檬黄渐变调淡（需要匹配根元素的 data-theme，不能放在 scoped 中） */
+/* 暗色：欢迎条的明黄渐变调淡（需要匹配根元素的 data-theme，不能放在 scoped 中） */
 html[data-theme='dark'] .workbench .hero {
   background: linear-gradient(100deg, rgba(255, 212, 59, 0.07), rgba(0, 0, 0, 0) 55%), var(--app-card);
 }

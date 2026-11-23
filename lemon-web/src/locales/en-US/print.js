@@ -208,7 +208,7 @@ export default {
     person: 'John Doe'
   },
   common: {
-    defaultCompany: 'Lemon ERP',
+    defaultCompany: 'Shuomi ERP',
     print: 'Print',
     generating: 'Generating print file…'
   },

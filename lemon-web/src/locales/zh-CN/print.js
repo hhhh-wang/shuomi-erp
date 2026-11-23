@@ -208,7 +208,7 @@ export default {
     person: '张三'
   },
   common: {
-    defaultCompany: '柠檬ERP',
+    defaultCompany: '硕米ERP',
     print: '打印',
     generating: '正在生成打印文件…'
   },

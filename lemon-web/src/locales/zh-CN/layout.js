@@ -48,7 +48,7 @@ export default {
       dust: '薄暮红',
       volcano: '火山橙',
       sunset: '日暮黄',
-      lemon: '柠檬黄',
+      lemon: '明黄',
       polar: '极光绿',
       cyan: '明青',
       geekblue: '极客蓝',

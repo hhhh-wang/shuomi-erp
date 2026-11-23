@@ -7,8 +7,8 @@ export default {
     home: 'Back to Home'
   },
   brandLine1: 'Keep your business',
-  brandLine2: 'fresh as a lemon, ',
-  brandHighlight: 'clean and efficient',
+  brandLine2: 'solid as grain, ',
+  brandHighlight: 'steady and efficient',
   brandDesc: 'From purchasing, production and warehousing to finance, HR, customers and projects, one system connects the entire business with real-time data that always matches the books.',
   tagWorkflow: 'Approval Workflow',
   tagDataPerm: 'Data Permission',

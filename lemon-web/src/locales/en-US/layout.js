@@ -47,7 +47,7 @@ export default {
       dust: 'Dust Red',
       volcano: 'Volcano',
       sunset: 'Calendula Gold',
-      lemon: 'Lemon Yellow',
+      lemon: 'Amber Yellow',
       polar: 'Polar Green',
       cyan: 'Cyan',
       geekblue: 'Geek Blue',

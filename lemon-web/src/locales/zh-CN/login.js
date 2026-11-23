@@ -7,8 +7,8 @@ export default {
     home: '回到首页'
   },
   brandLine1: '让企业经营',
-  brandLine2: '像柠檬一样',
-  brandHighlight: '清新高效',
+  brandLine2: '像硕米一样',
+  brandHighlight: '扎实高效',
   brandDesc: '从采购、生产、仓储到财务、人力、客户与项目，一套系统打通业务全流程，数据实时联动、账实一致。',
   tagWorkflow: '审批流程',
   tagDataPerm: '数据权限',

@@ -1,4 +1,4 @@
-# 柠檬ERP 一键部署：MySQL + Redis + 后端 + Nginx（前端）
+# 硕米ERP 一键部署：MySQL + Redis + 后端 + Nginx（前端）
 #   cd docker && cp .env.example .env   # 修改其中的密码和密钥
 #   docker compose up -d --build
 name: lemon-erp

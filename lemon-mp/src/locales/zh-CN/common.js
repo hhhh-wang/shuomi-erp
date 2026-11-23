@@ -1,6 +1,6 @@
 /** 通用文字（common.xxx） */
 export default {
-  appName: '柠檬ERP',
+  appName: '硕米ERP',
   tab: {
     workbench: '工作台',
     approval: '审批',

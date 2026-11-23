@@ -263,7 +263,7 @@ public final class AiPrefillBuilder {
      * @param kindLabel 主数据的名称（如「供应商」，已按当前语言取好）
      * @param exact     精确匹配
      * @param search    模糊搜索（建议限制条数）
-     * @param label     结果的显示名称（如「S001 柠檬供应商」）
+     * @param label     结果的显示名称（如「S001 硕米供应商」）
      * @return 匹配到的记录，没有时为 null
      */
     public <T> T match(String idField, String textField, String text, String kindLabel,

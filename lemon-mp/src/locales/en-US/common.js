@@ -1,6 +1,6 @@
 /** Common texts (common.xxx) */
 export default {
-  appName: 'Lemon ERP',
+  appName: 'Shuomi ERP',
   tab: {
     workbench: 'Home',
     approval: 'Approvals',

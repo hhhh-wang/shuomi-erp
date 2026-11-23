@@ -1,6 +1,6 @@
 <template>
   <div class="login-page">
-    <!-- 背景：柔和光斑 + 柠檬切片装饰 -->
+    <!-- 背景：柔和光斑 + 果片装饰 -->
     <div class="bg" aria-hidden="true">
       <span class="glow glow-a" />
       <span class="glow glow-b" />
@@ -43,7 +43,7 @@
           <AppLogo :size="48" />
           <div>
             <div class="brand-name">{{ configStore.systemName }}</div>
-            <div class="brand-en">LEMON ERP</div>
+            <div class="brand-en">SHUOMI ERP</div>
           </div>
         </div>
         <h1 class="brand-title">{{ $t('login.brandLine1') }}<br />{{ $t('login.brandLine2') }}<span class="highlight">{{ $t('login.brandHighlight') }}</span></h1>
@@ -213,7 +213,7 @@ async function refreshCaptcha() {
   captchaImage.value = c.image
 }
 // ---------------------------------------------------------------- 演示账号
-const DEMO_TENANT = '柠檬科技' // i18n-ignore 内置演示租户的名称（数据）
+const DEMO_TENANT = '硕米科技' // i18n-ignore 内置演示租户的名称（数据）
 const DEMO_PASSWORD = 'admin123'
 /** 点击演示账号填入表单；演示模式下默认填好超级管理员，直接点登录即可 */
 function fillDemo(username) {

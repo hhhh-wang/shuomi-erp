@@ -1,6 +1,8 @@
--- 柠檬ERP 初始化脚本（MySQL 8）
+-- 硕米ERP 初始化脚本（MySQL 8）
 -- 默认账号：admin / admin123（超级管理员）、test / admin123（普通用户，只有查看权限，数据权限为本部门及以下）
 -- 工作流引擎的 ACT_ 开头的表由 Flowable 启动时自动创建，不在本脚本中
+
+SET NAMES utf8mb4;
 
 DROP TABLE IF EXISTS ai_report;
 DROP TABLE IF EXISTS ai_cleanse_suggestion;
@@ -5553,10 +5555,10 @@ CREATE TABLE ai_report (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '智能报告（周报 / 月报）';
 
 INSERT INTO sys_tenant (id, name, admin_user_id, status, remark, create_time, update_time) VALUES
-(1, '柠檬科技', 1, 1, '平台租户（运营方），不受套餐限制', NOW(), NOW());
+(1, '硕米科技', 1, 1, '平台租户（运营方），不受套餐限制', NOW(), NOW());
 
 INSERT INTO sys_dept (id, parent_id, name, sort, leader_user_id, status, create_time, update_time) VALUES
-(1,   0,  '柠檬科技', 1, 1,    1, NOW(), NOW()),
+(1,   0,  '硕米科技', 1, 1,    1, NOW(), NOW()),
 (10,  1,  '研发部',   1, NULL, 1, NOW(), NOW()),
 (11,  1,  '市场部',   2, NULL, 1, NOW(), NOW()),
 (12,  1,  '财务部',   3, NULL, 1, NOW(), NOW()),
@@ -5781,7 +5783,7 @@ INSERT INTO wms_location (warehouse_id, code, name, sort, status, create_time, u
 (2, 'R-01', '原料区 1 排', 1, 1, NOW(), NOW());
 
 INSERT INTO wms_material (code, name, spec, unit, category, batch_enabled, serial_enabled, safety_stock, status, create_time, update_time) VALUES
-('M0001', '柠檬原浆', '5L/桶', '桶', 'RAW', 1, 0, 20, 1, NOW(), NOW()),
+('M0001', '硕米原浆', '5L/桶', '桶', 'RAW', 1, 0, 20, 1, NOW(), NOW()),
 ('M0002', '包装纸箱', '40×30×20cm', '个', 'PACKING', 0, 0, 100, 1, NOW(), NOW()),
 ('P0001', '智能榨汁机', 'LJ-200', '台', 'FINISHED', 0, 1, 5, 1, NOW(), NOW());
 

@@ -73,7 +73,7 @@ lemon:
     enabled: true
   user:
     # 录用时开通的登录账号的初始密码
-    initial-password: Lemon@123
+    initial-password: Shuomi@123
   # 微信小程序（lemon-mp）：所有租户共用一个小程序，AppID / AppSecret 在这里配置；为空时小程序不能用微信登录
   miniapp:
     app-id: ${LEMON_MINIAPP_APP_ID:}

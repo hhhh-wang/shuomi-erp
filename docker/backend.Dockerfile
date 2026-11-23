@@ -11,8 +11,12 @@ RUN --mount=type=cache,target=/root/.gradle \
 
 # ---------- 运行 ----------
 FROM eclipse-temurin:17-jre
+# 国内网络默认使用中科大 Ubuntu 镜像；海外构建可传 --build-arg APT_MIRROR=archive.ubuntu.com
+ARG APT_MIRROR=mirrors.ustc.edu.cn
+ENV DEBIAN_FRONTEND=noninteractive
 # 中文字体：单据打印（JasperReports）排版时用来测量文字宽度；curl 用于健康检查
-RUN apt-get update \
+RUN sed -i "s@archive.ubuntu.com@${APT_MIRROR}@g; s@security.ubuntu.com@${APT_MIRROR}@g" /etc/apt/sources.list.d/ubuntu.sources \
+    && apt-get update \
     && apt-get install -y --no-install-recommends fontconfig fonts-noto-cjk curl \
     && rm -rf /var/lib/apt/lists/*
 ENV TZ=Asia/Shanghai \

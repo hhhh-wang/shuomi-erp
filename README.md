@@ -1,12 +1,16 @@
 <p align="center">
-  <img src="lemon-web/public/favicon.svg" width="96" alt="柠檬ERP" />
+  <img src="lemon-web/public/favicon.svg" width="96" alt="硕米ERP" />
 </p>
 
-<h1 align="center">柠檬ERP · Lemon ERP</h1>
+<h1 align="center">硕米ERP · Shuomi ERP</h1>
 
 <p align="center">
   <b>真正 100% 开源、无功能限制的 ERP 系统</b><br />
-  让企业经营像柠檬一样清新高效：进销存、生产、仓储、质量、财务、人力、客户、项目、商务智能与 AI，一套系统全部打通
+  让企业经营像硕米一样扎实高效：进销存、生产、仓储、质量、财务、人力、客户、项目、商务智能与 AI，一套系统全部打通
+</p>
+
+<p align="center">
+  基于 <a href="https://github.com/MakeSomeFakeNews/lemon-erp">Lemon ERP</a> 开源项目（Apache-2.0）二次开发
 </p>
 
 <p align="center">
@@ -22,21 +26,19 @@
 </p>
 
 <p align="center">
-  <a href="https://erp.dqq.me"><b>在线演示</b></a> ·
-  <a href="https://makesomefakenews.github.io/lemon-erp-website/"><b>官网</b></a> ·
-  <a href="https://makesomefakenews.github.io/lemon-erp-website/manual/guide/"><b>用户手册</b></a> ·
-  <a href="https://makesomefakenews.github.io/lemon-erp-website/dev/start/"><b>开发文档</b></a> ·
-  <a href="#联系方式"><b>联系我们</b></a> ·
+  <a href="#快速开始"><b>快速开始</b></a> ·
+  <a href="https://makesomefakenews.github.io/lemon-erp-website/manual/guide/"><b>上游用户手册</b></a> ·
+  <a href="https://makesomefakenews.github.io/lemon-erp-website/dev/start/"><b>上游开发文档</b></a> ·
   <a href="#english"><b>English</b></a>
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/dashboard.jpg" alt="柠檬ERP 工作台" />
+  <img src="docs/screenshots/dashboard.jpg" alt="硕米ERP 工作台" />
 </p>
 
 ## 项目简介
 
-柠檬ERP（Lemon ERP）是一套面向中小制造、商贸企业的**真正 100% 开源、无功能限制的全功能 ERP 系统**，前后端分离，开箱即用；既可以直接作为企业的 ERP 软件使用，也适合作为 Java 企业级项目二次开发的基础。
+硕米ERP（Shuomi ERP）是基于 Lemon ERP 开源项目二次开发的、面向中小制造与商贸企业的**真正 100% 开源、无功能限制的全功能 ERP 系统**，前后端分离，开箱即用；既可以直接作为企业的 ERP 软件使用，也适合作为 Java 企业级项目二次开发的基础。
 
 - **业务全覆盖**：14 大模块、171 个功能页面，从请购到收款、从 BOM 到完工入库、从凭证到报表，一套系统闭环
 - **单据自动联动**：出入库自动更新库存、生成应收应付，业务单据一键生成会计凭证，账实一致
@@ -46,20 +48,20 @@
 
 > 如果这个项目对你有帮助，请点一下右上角的 **Star**，这是对我们最大的鼓励！
 
-## 在线演示
+## 演示账号
 
-演示地址：**https://erp.dqq.me**（演示环境只能查看，不能新增、修改、删除数据）
+本地启动后访问 **http://localhost**，使用以下账号登录（是否只读取决于 `LEMON_DEMO_ENABLED`）：
 
 | 租户 | 账号 | 密码 | 说明 |
 | --- | --- | --- | --- |
-| 柠檬科技 | admin | admin123 | 超级管理员，可以浏览全部功能 |
-| 柠檬科技 | test | admin123 | 普通用户（只读），数据权限为「本部门及以下」 |
+| 硕米科技 | admin | admin123 | 超级管理员，可以浏览全部功能 |
+| 硕米科技 | test | admin123 | 普通用户（只读），数据权限为「本部门及以下」 |
 
-## 为什么选择柠檬ERP
+## 为什么选择硕米ERP
 
 ### 与常见方案对比
 
-| | 商业 ERP 软件 | 「开源版 + 商业版」的开源 ERP | **柠檬ERP** |
+| | 商业 ERP 软件 | 「开源版 + 商业版」的开源 ERP | **硕米ERP** |
 | --- | --- | --- | --- |
 | 费用 | 按用户数、模块或年费收费，实施费另计 | 开源版免费，常用的高级功能需要购买商业版 | **完全免费**，没有付费版本 |
 | 功能范围 | 按购买的模块开通 | 开源版多为进销存等基础功能，生产、财务等常在商业版中 | **全部 14 大模块开源**：进销存、生产、质量、财务、人力、客户、项目、BI、AI |
@@ -110,9 +112,27 @@
   <tr><td><b>系统平台</b></td><td>用户、部门、角色、菜单 / 按钮 / 数据权限；SaaS 多租户与行业模板；编码规则、打印模板（PDF、套打）、业务参数、自定义字段；钉钉 / 企业微信 / 飞书集成；中英文切换；系统监控与定时任务</td></tr>
 </table>
 
-每个功能的详细说明见 [用户手册](https://makesomefakenews.github.io/lemon-erp-website/manual/guide/)。
+每个功能的详细说明见 [上游用户手册（Lemon ERP）](https://makesomefakenews.github.io/lemon-erp-website/manual/guide/)。
 
 ## 系统截图
+
+> 以下截图来自当前运行中的硕米ERP 实例，使用初始化基础资料；交易类数据需按业务流程录入或导入。
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/login.jpg" alt="登录页" /><br />登录页</td>
+    <td width="50%"><img src="docs/screenshots/sys-user.jpg" alt="用户与部门" /><br />用户与部门</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/wms-material.jpg" alt="物料管理" /><br />物料管理</td>
+    <td><img src="docs/screenshots/fin-account.jpg" alt="会计科目" /><br />会计科目</td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/screenshots/hr-employee.jpg" alt="员工档案" /><br />员工档案</td>
+  </tr>
+</table>
+
+<!-- 上游项目历史截图，保留源码但不参与页面渲染
 
 **采购订单详情**
 
@@ -290,15 +310,17 @@
 
 </details>
 
+-->
+
 ## 系统架构
 
 **业务架构**：蓝色虚线是模块内的业务流程，灰色虚线是跨模块的自动联动（生成下游单据、更新库存、生成应收应付与凭证）。
 
-![柠檬ERP 业务架构图](docs/architecture/business.png)
+![硕米ERP 业务架构图](docs/architecture/business.png)
 
 **技术架构**
 
-![柠檬ERP 技术架构图](docs/architecture/tech.png)
+![硕米ERP 技术架构图](docs/architecture/tech.png)
 
 ## 快速开始
 
@@ -312,7 +334,7 @@ cp .env.example .env        # 修改其中的密码和 JWT_SECRET
 docker compose up -d --build
 ```
 
-启动完成后访问 http://localhost（端口见 `.env` 中的 `WEB_PORT`）。构建、推送镜像使用 `./docker/build.sh`，详见 [Docker 部署](https://makesomefakenews.github.io/lemon-erp-website/dev/deploy/docker)。
+启动完成后访问 http://localhost（端口见 `.env` 中的 `WEB_PORT`）。构建、推送镜像使用 `./docker/build.sh`，上游部署说明见 [Docker 部署](https://makesomefakenews.github.io/lemon-erp-website/dev/deploy/docker)。
 
 不想在服务器上编译时，可以直接使用 [GitHub Packages](https://github.com/MakeSomeFakeNews?tab=packages&repo_name=lemon-erp) 中已构建好的镜像（支持 x86 和 ARM）：从 [Releases](https://github.com/MakeSomeFakeNews/lemon-erp/releases/latest) 下载 `lemon-erp-docker-<版本>.zip`，解压后：
 
@@ -365,11 +387,11 @@ location /api/ {
 }
 ```
 
-使用 AI 问数时还需要为 `/api/ai/` 关闭代理缓冲，见 [Nginx 配置](https://makesomefakenews.github.io/lemon-erp-website/dev/deploy/nginx)。
+使用 AI 问数时还需要为 `/api/ai/` 关闭代理缓冲，上游说明见 [Nginx 配置](https://makesomefakenews.github.io/lemon-erp-website/dev/deploy/nginx)。
 
 </details>
 
-**默认账号**：`admin` / `admin123`（超级管理员）、`test` / `admin123`（只读用户）。开启 SaaS 多租户（`LEMON_TENANT_ENABLED=true`）后登录需要填写租户「柠檬科技」；设置 `LEMON_DEMO_ENABLED=true` 开启演示模式（只能查看，不能修改数据）。
+**默认账号**：`admin` / `admin123`（超级管理员）、`test` / `admin123`（只读用户）。新建用户默认初始密码为 `Shuomi@123`，存量账号不受影响。开启 SaaS 多租户（`LEMON_TENANT_ENABLED=true`）后登录需要填写租户「硕米科技」；设置 `LEMON_DEMO_ENABLED=true` 开启演示模式（只能查看，不能修改数据）。
 
 ## 技术栈
 
@@ -403,30 +425,25 @@ lemon-erp
 └── docs                开发说明、架构图与截图
 ```
 
-## 联系方式
+## 上游项目
 
-商务合作、定制开发、部署实施或使用中遇到问题，欢迎联系：
-
-- 电话：17701123202
-- 微信：BG7LIF
-- 邮箱：zmissu@163.com
-
-也欢迎在 [Issues](https://github.com/MakeSomeFakeNews/lemon-erp/issues) 中反馈问题和建议，或提交 Pull Request 一起完善。
+本项目基于 [Lemon ERP](https://github.com/MakeSomeFakeNews/lemon-erp) 二次开发，遵循 Apache-2.0 协议，保留原项目的版权声明与许可证。上游问题可在 [Lemon ERP Issues](https://github.com/MakeSomeFakeNews/lemon-erp/issues) 中反馈。
 
 ## 真正 100% 开源
 
-柠檬ERP 不是「开源版 + 商业版」的模式，演示环境和文档中看到的全部功能，都在本仓库中完整开源：
+硕米ERP 不是「开源版 + 商业版」的模式，演示环境和文档中看到的全部功能，都在本仓库中完整开源：
 
 - **全部功能开源**：供应链、仓储、生产、质量、财务、人力、客户、项目、商务智能、AI，没有任何模块收费或闭源
 - **没有功能限制**：没有授权码和激活，系统本身不限制用户数、租户数和单据量，也没有隐藏的高级功能
 - **免费商用**：遵守 [Apache-2.0](LICENSE) 协议，个人与企业都可以免费使用、修改、二次开发和商业部署，使用时保留原作者版权声明与许可证文件即可
-- **文档同样开放**：250 多页 [用户手册](https://makesomefakenews.github.io/lemon-erp-website/manual/guide/) 和 [开发文档](https://makesomefakenews.github.io/lemon-erp-website/dev/start/)、Docker 一键部署脚本全部公开
+- **保留上游归属**：本项目基于 Lemon ERP 开源项目二次开发，原始版权与 Apache-2.0 许可证保持不变
+- **文档同样开放**：本仓库包含开发文档与 Docker 部署脚本；上游 250 多页 [用户手册](https://makesomefakenews.github.io/lemon-erp-website/manual/guide/) 和 [开发文档](https://makesomefakenews.github.io/lemon-erp-website/dev/start/) 也公开
 
-如果觉得柠檬ERP 不错，请点一个 **Star**，也欢迎推荐给身边做生意、办工厂、做软件的朋友。
+如果觉得硕米ERP 不错，请点一个 **Star**，也欢迎推荐给身边做生意、办工厂、做软件的朋友。
 
 ## English
 
-**Lemon ERP** is a truly 100% open-source, full-featured **ERP system** with no paid edition and no feature restrictions, for small and medium-sized manufacturers and distributors, built with **Spring Boot 4 + Vue 3 + Ant Design Vue 4**. It covers purchasing, sales, inventory and warehouse management (**WMS**), manufacturing execution (**MES**: BOM, MRP, work orders, shop-floor reporting), quality management (**QMS**), accounting and finance, **CRM**, human resources (**HRM**, payroll, attendance), project management, business intelligence (**BI**) and **AI** assistants. Documents flow between modules automatically: stock movements update inventory and generate receivables/payables, and business documents generate accounting vouchers.
+**Shuomi ERP** is a rebranded distribution of the open-source **Lemon ERP** project (Apache-2.0), a truly 100% open-source, full-featured **ERP system** with no paid edition and no feature restrictions, for small and medium-sized manufacturers and distributors, built with **Spring Boot 4 + Vue 3 + Ant Design Vue 4**. It covers purchasing, sales, inventory and warehouse management (**WMS**), manufacturing execution (**MES**: BOM, MRP, work orders, shop-floor reporting), quality management (**QMS**), accounting and finance, **CRM**, human resources (**HRM**, payroll, attendance), project management, business intelligence (**BI**) and **AI** assistants. Documents flow between modules automatically: stock movements update inventory and generate receivables/payables, and business documents generate accounting vouchers.
 
 - Visual approval workflow (Flowable), SaaS multi-tenancy, menu / button / API permissions and department-level data permissions
 - AI assistants with DeepSeek, Qwen, GLM, Kimi or Doubao: natural-language data queries, document recognition, data cleansing and business reports
@@ -434,8 +451,8 @@ lemon-erp
 - Chinese and English UI, demo mode, Docker one-click deployment
 - Every feature and every line of source code is open: no paid edition, no hidden modules, no license keys; Apache-2.0 licensed, free for commercial use
 
-Online demo: https://erp.dqq.me (tenant「柠檬科技」, `admin` / `admin123`) · Documentation: https://makesomefakenews.github.io/lemon-erp-website/ · Contact: zmissu@163.com
+Upstream project: https://github.com/MakeSomeFakeNews/lemon-erp · Upstream documentation: https://makesomefakenews.github.io/lemon-erp-website/
 
 ---
 
-<p align="center">Apache License 2.0 © 2026 柠檬ERP</p>
+<p align="center">Apache License 2.0 · 硕米ERP（基于 Lemon ERP 开源项目二次开发）</p>

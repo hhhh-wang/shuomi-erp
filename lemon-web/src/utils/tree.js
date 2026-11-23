@@ -64,7 +64,7 @@ export function mapTree(tree, mapper, parent = null) {
   })
 }
 
-/** 从根到节点的名称路径，如「柠檬科技 / 研发部 / 前端组」 */
+/** 从根到节点的名称路径，如「硕米科技 / 研发部 / 前端组」 */
 export function namePath(tree, id, sep = ' / ') {
   const walk = (nodes, path) => {
     for (const n of nodes) {

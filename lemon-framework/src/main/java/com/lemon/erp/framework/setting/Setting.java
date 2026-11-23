@@ -7,7 +7,7 @@ package com.lemon.erp.framework.setting;
  */
 public enum Setting {
 
-    SYSTEM_NAME("sys.name", Group.BASIC, "framework.label.setting.systemName", SettingType.TEXT, null, "柠檬ERP", null, 1, 30, // i18n-ignore 默认值，未修改时登录页按语言显示 framework.label.defaultSystemName
+    SYSTEM_NAME("sys.name", Group.BASIC, "framework.label.setting.systemName", SettingType.TEXT, null, "硕米ERP", null, 1, 30, // i18n-ignore 默认值，未修改时登录页按语言显示 framework.label.defaultSystemName
             "framework.label.setting.systemName.remark"),
     SHOW_DEMO_ACCOUNT("sys.showDemoAccount", Group.BASIC, "framework.label.setting.showDemoAccount", SettingType.BOOL, null, "true", null, 0, 0,
             "framework.label.setting.showDemoAccount.remark"),
@@ -33,7 +33,7 @@ public enum Setting {
             "framework.label.setting.passwordComplexity.remark"),
     PASSWORD_EXPIRE_DAYS("password.expireDays", Group.PASSWORD, "framework.label.setting.passwordExpireDays", SettingType.NUMBER, "lemon.security.password-expire-days", "0", null, 0, 3650,
             "framework.label.setting.passwordExpireDays.remark"),
-    USER_INITIAL_PASSWORD("user.initialPassword", Group.PASSWORD, "framework.label.setting.userInitialPassword", SettingType.TEXT, "lemon.user.initial-password", "Lemon@123", null, 6, 32,
+    USER_INITIAL_PASSWORD("user.initialPassword", Group.PASSWORD, "framework.label.setting.userInitialPassword", SettingType.TEXT, "lemon.user.initial-password", "Shuomi@123", null, 6, 32,
             "framework.label.setting.userInitialPassword.remark"),
 
     ATTACHMENT_MAX_MB("upload.attachmentMaxMb", Group.UPLOAD, "framework.label.setting.attachmentMaxMb", SettingType.NUMBER, null, "20", null, 1, 100,

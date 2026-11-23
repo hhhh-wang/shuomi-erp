@@ -31,10 +31,10 @@ jobs:
         include:
           - name: backend
             dockerfile: docker/backend.Dockerfile
-            title: 柠檬ERP 后端
+            title: 硕米ERP 后端
           - name: web
             dockerfile: docker/web.Dockerfile
-            title: 柠檬ERP 前端（Nginx）
+            title: 硕米ERP 前端（Nginx）
     steps:
       - uses: actions/checkout@v5
         with:

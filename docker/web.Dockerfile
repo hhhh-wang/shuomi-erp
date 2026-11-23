@@ -14,7 +14,7 @@ COPY lemon-web/ ./
 RUN npm run build
 
 # ---------- 运行 ----------
-FROM nginx:1.27-alpine
+FROM nginx:1.27.5-alpine
 ENV TZ=Asia/Shanghai
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /web/dist /usr/share/nginx/html

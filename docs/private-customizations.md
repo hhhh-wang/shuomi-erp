@@ -7,10 +7,10 @@
 ## 仓库与分支
 
 - 产品名称与目标仓库标识：`shuomi-erp`。
-- 当前 GitHub fork：`hhhh-wang/lemon-erp`；父仓库为 `MakeSomeFakeNews/lemon-erp`。
-- 计划更名为 `hhhh-wang/shuomi-erp`，继续保留 fork 及 `upstream`。更名尚未完成。
+- 当前 GitHub fork：`hhhh-wang/shuomi-erp`；父仓库为 `MakeSomeFakeNews/lemon-erp`。
+- 已更名为 `hhhh-wang/shuomi-erp`，继续保留 fork 及 `upstream`。
 - `main` 是产品主线，功能使用 `feature/*`，上游同步使用 `sync/upstream-YYYYMMDD`，按需使用 `release/*`。
-- 本次交付分支：`feature/shuomi-production-deployment`；部署调整与二开/发布标记分别提交。
+- 本次交付分支：`feature/shuomi-production-deployment`；部署、校验脚本通用修复、品牌集中配置和说明分别提交。
 - 发布标签统一为 `shuomi-vX.Y.Z-N`。本次不凭示例版本号创建发布标签。
 
 ## 本次改动范围
@@ -24,6 +24,7 @@
 | 发布脚本 | `scripts/docker-common.ps1`、`export-images.ps1`、`update-local-containers.ps1`、`update-production-containers.sh` | 校验镜像/归档、版本标签、健康、配置备份与失败回滚 |
 | 首次生产初始化 | `sql/production-bootstrap.sql` | 仅空库使用，干净系统种子数据，管理员默认锁定 |
 | 说明和私有文件边界 | `.gitignore`、`.dockerignore`、`docs/production-*.md` | 记录部署/更新方法，排除真实凭据和运维实值 |
+| 品牌集中配置 | `lemon-web/src/branding.js`、两端 Vite 配置和相关语言包 | 共用默认值，保留运行时系统名/租户名覆盖与 Logo |
 | 品牌和发布归属 | `README.md`、`docs/upstream-sync.md`、`.github/workflows/release.yml` | 标记二开、保留上游、统一硕米标签与对外发布名 |
 
 代码或脚本的定制位置使用上述标记注释；此表记录整体范围。生产账号、密码、JWT/AI 密钥及证书私钥使用本机/服务器私有文件，不进入提交、构建上下文或发布包。实际部署详情保存为忽略文件 `docker/production-status.private.md`。
@@ -38,12 +39,14 @@
 - 已有品牌提交：`0f7f9dd0`。
 - 已有同步规范提交：`2d5b0b1c`。
 - 本次部署提交：`8f6c237f`。
+- 通用跨平台校验修复：`bffee749`。
+- 品牌集中配置：`07add2a0`。
 - 本次部署验收见[生产部署验收记录](production-status.md)；镜像/配置验证与本轮文档和发布规则检查分别记录。
-- 本轮校验：两个 workflow YAML 解析、15 段 Shell 语法、6 组标签接受/拒绝与版本映射检查通过；提交内容未匹配实际私有凭据。
-- GitHub CI 已有后端 `gradlew build`（包含测试任务）、前端构建、小程序构建与检查。核对时工作流 active，但运行记录为 0；不能把文件存在视为 CI 已通过。
+- 本轮校验：两个 workflow YAML 解析、15 段 Shell 语法、6 组标签接受/拒绝与版本映射检查通过；Web/小程序 i18n、枚举与两端构建通过，产物品牌标题保持一致；提交内容未匹配实际私有凭据。
+- GitHub CI 包含后端 `gradlew build`（包含测试任务）、前端与小程序构建、多语言/枚举检查，以及 PR 中的 Docker 构建。`main` 要求对应四项检查通过，结果以当前 PR 和 Actions 为准。
 
 ## 后续上游同步
 
 使用[上游同步规范](upstream-sync.md)：从 `main` 创建日期同步分支，`git merge --no-ff upstream/main`，处理冲突并完成 CI 后通过 PR 合并。同步 PR 保留 merge commit。品牌、内部部署与通用修复分别提交；可复用修复单独向上游提出。
 
-本机已启用 `rerere`、`rerere.autoupdate`、`pull.ff=only` 和 `fetch.prune`；`.gitattributes` 已定义 LF 及 Windows 脚本 CRLF。品牌文案目前仍分布于多语言、AI、打印、小程序及登录配置中，集中品牌配置尚未全部完成。`main` 的 PR/CI/禁强推/禁删除保护也尚未配置。
+本机已启用 `rerere`、`rerere.autoupdate`、`pull.ff=only` 和 `fetch.prune`；`.gitattributes` 已定义 LF 及 Windows 脚本 CRLF。品牌默认值已集中在 `lemon-web/src/branding.js`；AI、打印、登录及小程序语言包引用此源，静态标题/manifest/pages 由构建配置同步。`main` 已开启 PR、必需 CI、解决对话、禁强推和禁删除保护，管理员同样受规则约束。

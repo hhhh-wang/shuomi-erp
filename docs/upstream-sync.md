@@ -8,23 +8,23 @@
 
 | 名称 | 地址 | 用途 |
 | --- | --- | --- |
-| `origin` | `git@github.com:hhhh-wang/lemon-erp.git` | 硕米ERP 的 GitHub fork，只向这里推送 |
+| `origin` | `git@github.com:hhhh-wang/shuomi-erp.git` | 硕米ERP 的 GitHub fork，只向这里推送 |
 | `upstream` | `git@github.com:MakeSomeFakeNews/lemon-erp.git` | Lemon ERP 官方仓库，只从这里拉取 |
 | `main` | `origin/main` | 硕米ERP 产品主线，始终保持可构建、可部署 |
 | `feature/*` | 从 `main` 拉出 | 自己的二开功能，通过 Pull Request 合并 |
 | `sync/upstream-YYYYMMDD` | 从 `main` 拉出 | 同步官方代码和处理冲突，通过 Pull Request 合并 |
 | `release/*` | 按需创建 | 维护旧版本或准备发布 |
 
-截至 2026-11-23，GitHub 仓库名仍为 `lemon-erp`，它是 `MakeSomeFakeNews/lemon-erp` 的公开 fork。保留 fork 关系，目标更名为 `shuomi-erp`；“私有二开”只标记内部定制范围，不表示访问权限已变为 private。
+GitHub 仓库为 `hhhh-wang/shuomi-erp`，它是 `MakeSomeFakeNews/lemon-erp` 的公开 fork。“私有二开”标记硕米内部定制范围，访问权限仍为 public。
 
-GitHub 完成更名后，再更新本地远程并检查 README 的 CI 地址：
+已有本地克隆可以按以下命令核对 `origin`；README 的 CI 地址使用硕米 fork：
 
 ```powershell
 git remote set-url origin git@github.com:hhhh-wang/shuomi-erp.git
 git remote -v
 ```
 
-`upstream` 始终保留官方地址。更名不改变 fork 关系；当前 GitHub CLI 未登录，需要在普通 PowerShell 中先运行 `& 'D:\work\GitHub CLI\gh.exe' auth login` 或在 GitHub 网页设置中操作。
+`upstream` 始终保留官方地址。需要使用 GitHub CLI 时，先用 `gh auth status` 检查账号；首次登录使用 `& 'D:\work\GitHub CLI\gh.exe' auth login`。本次机器已登录 `hhhh-wang`，凭据由系统 keyring 保存。
 
 `main` 已经和官方分叉，因此不要用 GitHub 的 “Sync fork” 按钮直接更新 `main`。统一使用同步分支和 Pull Request，保留 CI、审查和冲突处理记录。
 
@@ -113,7 +113,7 @@ gh pr create --base main --head "sync/upstream-$date"
 
 - `.gitattributes` 统一文本文件为 LF，Windows 脚本保持 CRLF。
 - 不批量格式化未修改的文件，不重命名技术模块。
-- 品牌配置逐步集中到少量文件；不要继续把系统名散落到业务代码。
+- 品牌默认值集中在 `lemon-web/src/branding.js`，Web 和小程序共用；运行时设置与静态配置同步见[品牌说明](branding.md)。
 - 可回馈上游的通用修复单独提交，优先向上游提 PR。上游合并后，分叉会自然缩小。
 - 每次官方同步都先 fetch 再创建同步分支，不在已分叉的 `main` 上直接合并或强推。
 
@@ -143,13 +143,13 @@ gh release create shuomi-v1.2.0-1 --title "硕米ERP 1.2.0 (1)" --generate-notes
 
 ## GitHub 设置
 
-建议在 GitHub 仓库设置中完成以下配置：
+本次已在 GitHub 仓库设置中启用以下主干规则；CI 结果以 PR 实际检查为准：
 
 - 默认分支保持 `main`。
 - 保护 `main`：禁止删除、禁止强制推送、必须通过 Pull Request。
-- 要求 PR 通过 CI：`CI / 后端`、`CI / 前端`、`CI / 微信小程序`。
+- 要求 PR 通过 CI：`后端`、`前端`、`微信小程序`、`Docker 镜像`，合并前分支需保持最新。
 - 要求合并前解决所有对话；管理员也遵守规则。
 - 不要求线性历史。普通功能 PR 可以 Squash，官方同步 PR 必须保留 merge commit。
 - 仓库描述和 README 保留 Lemon ERP / Apache-2.0 上游归属。
 
-仓库更名为 `shuomi-erp` 时保持 GitHub fork 与 `upstream` 关系。无需长期 `develop` 分支。当前 `main` 保护尚未开启；CI 文件已启用，但 GitHub 暂无运行记录，必须在 PR/主线实际通过后再把对应检查设置为必需。
+默认分支为 `main`，无需长期 `develop`。允许 merge commit 与普通功能 squash，关闭 rebase merge，保留上游同步的合并祖先。本仓库为个人主线，必须通过 PR，但不额外要求另一位评审者批准；必需 CI 和对话解决规则仍然生效。

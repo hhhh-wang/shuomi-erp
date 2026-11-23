@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/hhhh-wang/lemon-erp/actions/workflows/ci.yml"><img src="https://github.com/hhhh-wang/lemon-erp/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/hhhh-wang/shuomi-erp/actions/workflows/ci.yml"><img src="https://github.com/hhhh-wang/shuomi-erp/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://github.com/MakeSomeFakeNews/lemon-erp/stargazers"><img src="https://img.shields.io/github/stars/MakeSomeFakeNews/lemon-erp?style=flat&logo=github&label=upstream%20stars" alt="上游 Lemon ERP stars" /></a>
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="license" />
   <img src="https://img.shields.io/badge/Java-17-orange.svg" alt="java" />
@@ -46,7 +46,7 @@
 - **技术栈新**：Spring Boot 4 + Vue 3 + Ant Design Vue 4，Gradle 多模块、单向依赖，代码结构清晰
 - **二开归属清晰**：上游来自 Lemon ERP，硕米内部定制使用 `SHUOMI-ERP PRIVATE CUSTOMIZATION` 标记，具体范围见[私有二开记录](docs/private-customizations.md)
 
-> “私有二开”是内部定制范围标记。当前 GitHub 仓库仍是公开的 `hhhh-wang/lemon-erp` fork，目标名称为 `shuomi-erp`；该标记不会改变 GitHub 可见性。生产凭据与实际运维记录使用忽略文件保存。
+> “私有二开”是内部定制范围标记。当前 GitHub 仓库为公开的 `hhhh-wang/shuomi-erp` fork；该标记说明改动归属，GitHub 可见性仍为 public。生产凭据与实际运维记录使用忽略文件保存。
 
 ## 部署与二开维护
 
@@ -54,6 +54,7 @@
 - [生产部署验收记录](docs/production-status.md)
 - [私有二开范围与兼容标识](docs/private-customizations.md)
 - [上游同步、分支与发布规范](docs/upstream-sync.md)
+- [品牌默认值与运行时覆盖](docs/branding.md)
 
 ## 演示账号
 
@@ -450,7 +451,7 @@ lemon-erp
 - WeChat mini program, mobile / PDA barcode scanning, data screens, DingTalk / WeCom / Feishu login and notifications
 - Chinese and English UI, demo mode, Docker one-click deployment
 - `SHUOMI-ERP PRIVATE CUSTOMIZATION` identifies Shuomi changes; upstream attribution and the Apache-2.0 license remain in place
-- The current GitHub repository is a public fork, pending rename to `shuomi-erp`; the customization marker does not change repository visibility
+- The GitHub repository is the public fork `hhhh-wang/shuomi-erp`; the customization marker identifies internal changes and does not change repository visibility
 
 Upstream project: https://github.com/MakeSomeFakeNews/lemon-erp · Upstream documentation: https://makesomefakenews.github.io/lemon-erp-website/
 

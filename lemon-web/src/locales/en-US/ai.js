@@ -1,3 +1,6 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: shared brand default
+import { BRAND } from '../../branding.js'
+
 /** AI: AI Settings, AI Q&A, Smart Entry, Data Cleansing, Smart Reports */
 export default {
   provider: {
@@ -80,7 +83,7 @@ export default {
     renameTitle: 'Rename Chat',
     deleteConfirm: 'Delete this chat and all its messages?',
     noConversations: 'No chats yet',
-    welcome: 'Hi, I am the Shuomi ERP data assistant',
+    welcome: `Hi, I am the ${BRAND.englishName} data assistant`,
     welcomeDesc: 'Ask about the business data you are allowed to view, for example:',
     example1: 'What are the sales this month? How do they compare with last month?',
     example2: 'Which materials are below safety stock?',

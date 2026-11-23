@@ -134,6 +134,8 @@
 </template>
 
 <script setup>
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: shared demo tenant
+import { BRAND } from '@/branding'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
@@ -213,7 +215,7 @@ async function refreshCaptcha() {
   captchaImage.value = c.image
 }
 // ---------------------------------------------------------------- 演示账号
-const DEMO_TENANT = '硕米科技' // i18n-ignore 内置演示租户的名称（数据）
+const DEMO_TENANT = BRAND.demoTenant
 const DEMO_PASSWORD = 'admin123'
 /** 点击演示账号填入表单；演示模式下默认填好超级管理员，直接点登录即可 */
 function fillDemo(username) {

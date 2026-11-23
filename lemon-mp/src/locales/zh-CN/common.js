@@ -1,6 +1,9 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: shared brand default
+import { BRAND } from '../../../../lemon-web/src/branding.js'
+
 /** 通用文字（common.xxx） */
 export default {
-  appName: '硕米ERP',
+  appName: BRAND.name,
   tab: {
     workbench: '工作台',
     approval: '审批',

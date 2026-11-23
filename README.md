@@ -1,3 +1,4 @@
+<!-- SHUOMI-ERP PRIVATE CUSTOMIZATION: Shuomi branding and deployment -->
 <p align="center">
   <img src="lemon-web/public/favicon.svg" width="96" alt="硕米ERP" />
 </p>
@@ -5,7 +6,7 @@
 <h1 align="center">硕米ERP · Shuomi ERP</h1>
 
 <p align="center">
-  <b>真正 100% 开源、无功能限制的 ERP 系统</b><br />
+  <b>硕米内部定制 ERP · 基于 Lemon ERP 二次开发</b><br />
   让企业经营像硕米一样扎实高效：进销存、生产、仓储、质量、财务、人力、客户、项目、商务智能与 AI，一套系统全部打通
 </p>
 
@@ -14,9 +15,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/MakeSomeFakeNews/lemon-erp/actions/workflows/ci.yml"><img src="https://github.com/MakeSomeFakeNews/lemon-erp/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/MakeSomeFakeNews/lemon-erp/releases/latest"><img src="https://img.shields.io/github/v/release/MakeSomeFakeNews/lemon-erp" alt="release" /></a>
-  <a href="https://github.com/MakeSomeFakeNews/lemon-erp/stargazers"><img src="https://img.shields.io/github/stars/MakeSomeFakeNews/lemon-erp?style=flat&logo=github" alt="stars" /></a>
+  <a href="https://github.com/hhhh-wang/shuomi-erp/actions/workflows/ci.yml"><img src="https://github.com/hhhh-wang/shuomi-erp/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/MakeSomeFakeNews/lemon-erp/stargazers"><img src="https://img.shields.io/github/stars/MakeSomeFakeNews/lemon-erp?style=flat&logo=github&label=upstream%20stars" alt="上游 Lemon ERP stars" /></a>
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="license" />
   <img src="https://img.shields.io/badge/Java-17-orange.svg" alt="java" />
   <img src="https://img.shields.io/badge/Spring%20Boot-4.1-brightgreen.svg" alt="spring boot" />
@@ -38,15 +38,23 @@
 
 ## 项目简介
 
-硕米ERP（Shuomi ERP）是基于 Lemon ERP 开源项目二次开发的、面向中小制造与商贸企业的**真正 100% 开源、无功能限制的全功能 ERP 系统**，前后端分离，开箱即用；既可以直接作为企业的 ERP 软件使用，也适合作为 Java 企业级项目二次开发的基础。
+硕米ERP（Shuomi ERP）是基于 Lemon ERP（Apache-2.0）的内部定制 ERP，面向中小制造与商贸企业，前后端分离。本仓库维护硕米的品牌、部署配置和业务二开，继续保留上游归属及许可证。
 
 - **业务全覆盖**：14 大模块、171 个功能页面，从请购到收款、从 BOM 到完工入库、从凭证到报表，一套系统闭环
 - **单据自动联动**：出入库自动更新库存、生成应收应付，业务单据一键生成会计凭证，账实一致
 - **多端使用**：电脑浏览器、微信小程序、手机 / PDA 扫码作业、数据大屏投屏，支持中英文界面
 - **技术栈新**：Spring Boot 4 + Vue 3 + Ant Design Vue 4，Gradle 多模块、单向依赖，代码结构清晰
-- **真正 100% 开源**：全部功能、全部源码开放，没有商业版、没有隐藏模块、没有授权码，个人与企业均可免费商用
+- **二开归属清晰**：上游来自 Lemon ERP，硕米内部定制使用 `SHUOMI-ERP PRIVATE CUSTOMIZATION` 标记，具体范围见[私有二开记录](docs/private-customizations.md)
 
-> 如果这个项目对你有帮助，请点一下右上角的 **Star**，这是对我们最大的鼓励！
+> “私有二开”是内部定制范围标记。当前 GitHub 仓库为公开的 `hhhh-wang/shuomi-erp` fork；该标记说明改动归属，GitHub 可见性仍为 public。生产凭据与实际运维记录使用忽略文件保存。
+
+## 部署与二开维护
+
+- [本地部署、镜像导出与生产更新](docs/production-deployment.md)
+- [生产部署验收记录](docs/production-status.md)
+- [私有二开范围与兼容标识](docs/private-customizations.md)
+- [上游同步、分支与发布规范](docs/upstream-sync.md)
+- [品牌默认值与运行时覆盖](docs/branding.md)
 
 ## 演示账号
 
@@ -59,24 +67,15 @@
 
 ## 为什么选择硕米ERP
 
-### 与常见方案对比
-
-| | 商业 ERP 软件 | 「开源版 + 商业版」的开源 ERP | **硕米ERP** |
-| --- | --- | --- | --- |
-| 费用 | 按用户数、模块或年费收费，实施费另计 | 开源版免费，常用的高级功能需要购买商业版 | **完全免费**，没有付费版本 |
-| 功能范围 | 按购买的模块开通 | 开源版多为进销存等基础功能，生产、财务等常在商业版中 | **全部 14 大模块开源**：进销存、生产、质量、财务、人力、客户、项目、BI、AI |
-| 源码 | 不提供 | 只开放部分源码 | **全部源码开放**，可以审计、修改 |
-| 数据归属 | SaaS 版数据在厂商服务器 | 自己部署 | **私有化部署**，数据在自己的服务器上 |
-| 用户数、单据量 | 按授权限制 | 部分有限制 | **没有授权码，系统本身不限制** |
-| 二次开发 | 依赖厂商或认证伙伴 | 可以，但闭源部分改不了 | **完全自主**，有 250 多页开发文档和完整示例 |
+上游 Lemon ERP 提供完整的 ERP 功能与 Apache-2.0 授权。硕米版本按内部部署和业务需求维护，下列能力来自上游基础及本仓库二开。
 
 ### 核心优势
 
-1. **省钱**：软件本身零费用，没有按用户、按模块、按年收费，企业只需要一台服务器；软件服务商用它交付项目，不用再付授权费
+1. **成本可控**：基于 Apache-2.0 上游，按内部业务需求实施、部署和维护
 2. **一套系统管全业务**：采购、销售、仓储、生产、质量、财务、人力、客户、项目、BI 都在一个系统里，不用买多套软件再做接口集成，数据天然一致
 3. **业财一体，账实相符**：出入库自动更新库存、生成应收应付，业务单据一键生成凭证；生产领料、完工入库自动进入成本核算，月末结账一键完成
 4. **贴合国内企业**：小企业会计准则的资产负债表、利润表、现金流量表，数电票导入勾稽，个税累计预扣与专项附加扣除、社保公积金，钉钉 / 企业微信 / 飞书、微信小程序，DeepSeek、通义千问等国产大模型
-5. **数据自主可控**：私有化部署在自己的服务器或内网，源码完全开放可审计，不依赖任何厂商的云服务
+5. **数据自主可控**：部署在自己的服务器或内网，源码可以审计和定制，数据与运行环境由自己管理
 6. **拿来就能用**：Docker 一条命令启动；内置示例基础资料、按行业模板开通功能、期初启用向导；中英文界面；250 多页用户手册覆盖每个页面的操作
 7. **容易二次开发**：Spring Boot 4 + Vue 3 主流技术栈，Gradle 多模块、依赖单向，单据审批、状态流转、数据权限、明细行等都有公共组件；新增模块、接入审批、扩展 AI 能力都有完整的开发文档和示例
 8. **多端协同**：电脑浏览器处理全部业务，微信小程序审批和外勤，手机 / PDA 扫码收发货和盘点，数据大屏投屏到车间和仓库
@@ -445,13 +444,14 @@ lemon-erp
 
 ## English
 
-**Shuomi ERP** is a rebranded distribution of the open-source **Lemon ERP** project (Apache-2.0), a truly 100% open-source, full-featured **ERP system** with no paid edition and no feature restrictions, for small and medium-sized manufacturers and distributors, built with **Spring Boot 4 + Vue 3 + Ant Design Vue 4**. It covers purchasing, sales, inventory and warehouse management (**WMS**), manufacturing execution (**MES**: BOM, MRP, work orders, shop-floor reporting), quality management (**QMS**), accounting and finance, **CRM**, human resources (**HRM**, payroll, attendance), project management, business intelligence (**BI**) and **AI** assistants. Documents flow between modules automatically: stock movements update inventory and generate receivables/payables, and business documents generate accounting vouchers.
+**Shuomi ERP** is an internal customization of **Lemon ERP** (Apache-2.0), for small and medium-sized manufacturers and distributors, built with **Spring Boot 4 + Vue 3 + Ant Design Vue 4**. It covers purchasing, sales, inventory and warehouse management (**WMS**), manufacturing execution (**MES**: BOM, MRP, work orders, shop-floor reporting), quality management (**QMS**), accounting and finance, **CRM**, human resources (**HRM**, payroll, attendance), project management, business intelligence (**BI**) and **AI** assistants. Documents flow between modules automatically: stock movements update inventory and generate receivables/payables, and business documents generate accounting vouchers.
 
 - Visual approval workflow (Flowable), SaaS multi-tenancy, menu / button / API permissions and department-level data permissions
 - AI assistants with DeepSeek, Qwen, GLM, Kimi or Doubao: natural-language data queries, document recognition, data cleansing and business reports
 - WeChat mini program, mobile / PDA barcode scanning, data screens, DingTalk / WeCom / Feishu login and notifications
 - Chinese and English UI, demo mode, Docker one-click deployment
-- Every feature and every line of source code is open: no paid edition, no hidden modules, no license keys; Apache-2.0 licensed, free for commercial use
+- `SHUOMI-ERP PRIVATE CUSTOMIZATION` identifies Shuomi changes; upstream attribution and the Apache-2.0 license remain in place
+- The GitHub repository is the public fork `hhhh-wang/shuomi-erp`; the customization marker identifies internal changes and does not change repository visibility
 
 Upstream project: https://github.com/MakeSomeFakeNews/lemon-erp · Upstream documentation: https://makesomefakenews.github.io/lemon-erp-website/
 

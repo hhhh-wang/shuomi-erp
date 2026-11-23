@@ -1,5 +1,6 @@
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
 # 前端镜像（Nginx + 前端静态文件，/api 转发到后端）：构建上下文为项目根目录
-#   docker build -f docker/web.Dockerfile -t lemon-erp-web .
+#   docker build -f docker/web.Dockerfile -t shuomi-erp-web .
 
 # ---------- 构建 ----------
 FROM --platform=$BUILDPLATFORM node:22-alpine AS build
@@ -19,3 +20,5 @@ ENV TZ=Asia/Shanghai
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /web/dist /usr/share/nginx/html
 EXPOSE 80
+HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=5 \
+    CMD wget -q -O /dev/null http://127.0.0.1/healthz || exit 1

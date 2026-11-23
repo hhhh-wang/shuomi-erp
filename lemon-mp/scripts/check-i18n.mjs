@@ -1,3 +1,4 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: portable shared-locale checks
 /**
  * 多语言检查：node scripts/check-i18n.mjs（npm run i18n:check）
  * 1. 语言包：zh-CN 与 en-US 的键是否一致
@@ -7,7 +8,7 @@
  * 有问题时退出码为 1
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
-import { join, relative, resolve } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 const ROOT = resolve(import.meta.dirname, '..')
@@ -38,7 +39,12 @@ for (const lang of LANGS) {
   for (const f of readdirSync(join(LOCALES, lang))) {
     if (!f.endsWith('.js')) continue
     // 语言包是 ESM（export default），以文本方式加载，避免受 package.json 的模块类型影响
-    const src = readFileSync(join(LOCALES, lang, f), 'utf8')
+    const localeFile = join(LOCALES, lang, f)
+    const localeUrl = pathToFileURL(localeFile)
+    const src = readFileSync(localeFile, 'utf8').replace(
+      /\bfrom\s+(['"])(\.\.?\/[^'"]+)\1/g,
+      (_match, quote, specifier) => `from ${quote}${new URL(specifier, localeUrl).href}${quote}`
+    )
     const mod = await import(`data:text/javascript;base64,${Buffer.from(src).toString('base64')}`)
     flatten(mod.default, f.slice(0, -3), keys[lang])
   }
@@ -51,11 +57,11 @@ for (const [a, b] of [['zh-CN', 'en-US'], ['en-US', 'zh-CN']]) {
   }
 }
 
-const files = walk(SRC).filter((f) => !f.startsWith(LOCALES + '/'))
+const files = walk(SRC).filter((f) => !f.startsWith(LOCALES + sep))
 const KEY_RE = /(?<![\w.])(?:\$t|t|te)\(\s*['"]([\w-]+(?:\.[\w-]+)+)['"]/g
 for (const file of files) {
   const rel = relative(ROOT, file)
-  const text = readFileSync(file, 'utf8')
+  const text = readFileSync(file, 'utf8').replace(/\r\n?/g, '\n')
   for (const m of text.matchAll(KEY_RE)) {
     for (const lang of LANGS) {
       if (!keys[lang].has(m[1])) problems.push(`[${lang} 缺少] ${m[1]}（${rel}）`)

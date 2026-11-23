@@ -52,3 +52,16 @@ docker/.env
 
 ### 宣传视频 ###
 /docs/video/
+
+# 环境实值、离线镜像包和部署凭据
+docker/.env*
+!docker/.env*.example
+docker/*.pem
+docker/*.key
+/exports/
+
+# Private production administrator access details
+docker/production-access.txt
+
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: private production inventory
+docker/production-status.private.md

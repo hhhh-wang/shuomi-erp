@@ -1,3 +1,6 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: shared brand default
+import { BRAND } from '../../branding.js'
+
 /** 打印模板与单据打印字段 */
 export default {
   name: {
@@ -208,7 +211,7 @@ export default {
     person: 'John Doe'
   },
   common: {
-    defaultCompany: 'Shuomi ERP',
+    defaultCompany: BRAND.englishName,
     print: 'Print',
     generating: 'Generating print file…'
   },

@@ -1,3 +1,6 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: shared brand default
+import { BRAND } from '../../branding.js'
+
 /** 智能（AI）：AI 设置、AI 问数、智能录入、数据整理、智能报告 */
 export default {
   provider: {
@@ -80,7 +83,7 @@ export default {
     renameTitle: '重命名对话',
     deleteConfirm: '删除这个对话及其全部消息？',
     noConversations: '还没有对话',
-    welcome: '你好，我是硕米ERP 数据助手',
+    welcome: `你好，我是${BRAND.name} 数据助手`,
     welcomeDesc: '可以用自然语言查询你有权限查看的业务数据，例如：',
     example1: '本月销售额是多少？和上月相比怎么样？',
     example2: '库存低于安全库存的物料有哪些？',

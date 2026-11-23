@@ -1,3 +1,4 @@
+// SHUOMI-ERP PRIVATE CUSTOMIZATION: portable shared-locale checks
 /**
  * 多语言检查：node scripts/check-i18n.mjs [目录或文件…]（默认 src）
  * 1. 语言包：zh-CN 与 en-US 的键是否一致（menu、dict 只有译文，不检查）
@@ -7,7 +8,7 @@
  * 有问题时退出码为 1
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
-import { join, relative, resolve } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 const ROOT = resolve(import.meta.dirname, '..')
@@ -73,11 +74,11 @@ for (const block of inserts('sys_dict_data')) {
 }
 
 const targets = process.argv.slice(2).length ? process.argv.slice(2).map((p) => resolve(p)) : [SRC]
-const files = targets.flatMap((p) => walk(p)).filter((f) => !f.startsWith(LOCALES + '/'))
+const files = targets.flatMap((p) => walk(p)).filter((f) => !f.startsWith(LOCALES + sep))
 const KEY_RE = /(?<![\w.])(?:\$t|t|tt|te)\(\s*['"]([\w-]+(?:\.[\w-]+)+)['"]/g
 for (const file of files) {
   const rel = relative(ROOT, file)
-  const text = readFileSync(file, 'utf8')
+  const text = readFileSync(file, 'utf8').replace(/\r\n?/g, '\n')
   for (const m of text.matchAll(KEY_RE)) {
     const key = m[1]
     const ns = key.split('.')[0]

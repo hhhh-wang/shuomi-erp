@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
 # 构建硕米ERP 的后端、前端镜像，可选推送到镜像仓库
 #
-#   ./docker/build.sh                                  # 构建 lemon-erp-backend:latest、lemon-erp-web:latest
+#   ./docker/build.sh                                  # 构建 shuomi-erp-backend:latest、shuomi-erp-web:latest
 #   ./docker/build.sh -t 1.1.1                         # 指定标签
 #   ./docker/build.sh -p registry.example.com/lemon/lemon-erp -t 1.1.1 --push
 #   ./docker/build.sh --npm-registry https://registry.npmmirror.com
@@ -10,7 +11,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-PREFIX=lemon-erp
+PREFIX=shuomi-erp
 TAG=latest
 PUSH=false
 NPM_REGISTRY=

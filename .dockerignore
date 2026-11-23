@@ -16,3 +16,19 @@ uploads
 attachments
 docs
 docker/.env
+
+# 任何环境的真实配置和镜像归档不得进入构建上下文
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+exports
+
+# Windows 发布脚本生成的离线发布目录
+/dist/
+
+# Private production administrator access details
+docker/production-access.txt
+
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: private production inventory
+docker/production-status.private.md

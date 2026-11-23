@@ -1,5 +1,6 @@
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
 # 后端镜像：构建上下文为项目根目录
-#   docker build -f docker/backend.Dockerfile -t lemon-erp-backend .
+#   docker build -f docker/backend.Dockerfile -t shuomi-erp-backend .
 
 # ---------- 构建 ----------
 FROM --platform=$BUILDPLATFORM eclipse-temurin:17-jdk AS build

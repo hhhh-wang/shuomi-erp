@@ -1,5 +1,10 @@
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
 # 生产环境：所有敏感配置必须通过环境变量提供，缺失时启动失败
 spring:
+  sql:
+    init:
+      # 业务表初始化/升级通过审查后的独立 SQL 执行，生产启动不执行 classpath 初始化脚本。
+      mode: never
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL}
@@ -17,7 +22,13 @@ lemon:
     secret: ${JWT_SECRET}
   upload:
     path: ${UPLOAD_PATH}
+    attachment-path: ${LEMON_UPLOAD_ATTACHMENTPATH:/data/attachments}
 
 logging:
   level:
     root: info
+
+# 正常生产启动只校验 Flowable schema，避免自动修改生产表。
+# 本地 Docker Compose 显式设为 true；生产首次初始化/版本升级单独准备引擎表。
+flowable:
+  database-schema-update: ${FLOWABLE_DATABASE_SCHEMA_UPDATE:false}

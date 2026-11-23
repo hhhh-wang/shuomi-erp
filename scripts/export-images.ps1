@@ -1,5 +1,5 @@
-# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
-﻿[CmdletBinding()]
+﻿# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
+[CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)][ValidateSet('init', 'update')][string]$Package,
     [ValidatePattern('^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$')][string]$ReleaseTag = '',
@@ -21,7 +21,7 @@ $TaskDockerDirectory = Join-Path $TaskProjectRoot 'docker'
 $TaskLocalEnv = Join-Path $TaskDockerDirectory '.env'
 $TaskLocalCompose = Join-Path $TaskDockerDirectory 'docker-compose.yml'
 if (-not (Test-Path -LiteralPath $TaskLocalEnv -PathType Leaf)) { throw 'Create docker/.env from docker/.env.local.example and test the local containers first.' }
-foreach ($TaskRelative in @('docker/docker-compose.yml', 'docker/docker-compose.prod.yml', 'docker/.env.local.example', 'docker/.env.prod.example', 'docs/production-deployment.md', 'scripts/update-production-containers.sh')) {
+foreach ($TaskRelative in @('LICENSE', 'docker/docker-compose.yml', 'docker/docker-compose.prod.yml', 'docker/.env.local.example', 'docker/.env.prod.example', 'docs/production-deployment.md', 'scripts/update-production-containers.sh')) {
     if (-not (Test-Path -LiteralPath (Join-Path $TaskProjectRoot $TaskRelative) -PathType Leaf)) { throw ('Required release file is missing: ' + $TaskRelative) }
 }
 if ($Package -eq 'init' -and -not (Test-Path -LiteralPath (Join-Path $TaskProjectRoot 'sql/init.sql') -PathType Leaf)) { throw 'sql/init.sql is missing.' }
@@ -90,7 +90,7 @@ try {
         try { $TaskInput.CopyTo($TaskGzip) } finally { $TaskGzip.Dispose() }
     } finally { $TaskOutput.Dispose() }
 } finally { $TaskInput.Dispose() }
-$TaskReleaseFiles = @('docker/docker-compose.yml', 'docker/docker-compose.prod.yml', 'docker/.env.local.example', 'docker/.env.prod.example', 'docs/production-deployment.md', 'scripts/update-production-containers.sh')
+$TaskReleaseFiles = @('LICENSE', 'docker/docker-compose.yml', 'docker/docker-compose.prod.yml', 'docker/.env.local.example', 'docker/.env.prod.example', 'docs/production-deployment.md', 'scripts/update-production-containers.sh')
 if ($Package -eq 'init') {
     $TaskReleaseFiles += 'sql/init.sql'
     if (Test-Path -LiteralPath (Join-Path $TaskProjectRoot 'sql/production-bootstrap.sql') -PathType Leaf) { $TaskReleaseFiles += 'sql/production-bootstrap.sql' }

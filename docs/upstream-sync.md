@@ -1,5 +1,7 @@
 # 上游同步与二开分支规范
 
+<!-- SHUOMI-ERP PRIVATE CUSTOMIZATION: fork development and release policy -->
+
 本文说明硕米ERP 的 Git 分支、发布和 Lemon ERP 官方代码同步流程。目标是在持续获得上游修复与新功能的同时，保留硕米自己的品牌、配置和业务改动。
 
 ## 仓库关系
@@ -12,6 +14,17 @@
 | `feature/*` | 从 `main` 拉出 | 自己的二开功能，通过 Pull Request 合并 |
 | `sync/upstream-YYYYMMDD` | 从 `main` 拉出 | 同步官方代码和处理冲突，通过 Pull Request 合并 |
 | `release/*` | 按需创建 | 维护旧版本或准备发布 |
+
+截至 2026-11-23，GitHub 仓库名仍为 `lemon-erp`，它是 `MakeSomeFakeNews/lemon-erp` 的公开 fork。保留 fork 关系，目标更名为 `shuomi-erp`；“私有二开”只标记内部定制范围，不表示访问权限已变为 private。
+
+GitHub 完成更名后，再更新本地远程并检查 README 的 CI 地址：
+
+```powershell
+git remote set-url origin git@github.com:hhhh-wang/shuomi-erp.git
+git remote -v
+```
+
+`upstream` 始终保留官方地址。更名不改变 fork 关系；当前 GitHub CLI 未登录，需要在普通 PowerShell 中先运行 `& 'D:\work\GitHub CLI\gh.exe' auth login` 或在 GitHub 网页设置中操作。
 
 `main` 已经和官方分叉，因此不要用 GitHub 的 “Sync fork” 按钮直接更新 `main`。统一使用同步分支和 Pull Request，保留 CI、审查和冲突处理记录。
 
@@ -63,7 +76,7 @@ git merge --no-ff upstream/main
 
 1. 用户可见的品牌名称、硕米初始化数据和登录文案，保留硕米版本。
 2. Logo 使用上游原版资源；没有品牌要求时不要修改 Logo 文件。
-3. Java 包名、Gradle 模块、数据库名、用户 `lemon`、`LEMON_*` 环境变量、容器与 Jar 名称继续沿用，降低冲突面。
+3. Java `com.lemon.*`、Gradle `lemon-*` 模块、`lemon-erp.jar`、`LEMON_*` 环境变量和本地 `lemon_erp` 数据库/`lemon-erp` 项目名继续沿用。生产项目、容器、镜像前缀和外部数据库使用 `shuomi-erp`，不因此批量重命名内部技术标识。
 4. `sql/init.sql` 先接受上游结构变化，再重新核对硕米种子数据，不要直接覆盖线上数据库。
 5. 多语言文件先合并上游新增键，再保留硕米品牌文案。
 6. 构建产物、临时截图、`.env`、密钥和本地数据库文件不得提交。
@@ -106,12 +119,12 @@ gh pr create --base main --head "sync/upstream-$date"
 
 ## 发布与标签
 
-硕米版本使用带 prerelease 后缀的 SemVer 标签，避免与官方 `v*` 标签冲突：
+硕米版本统一使用 `shuomi-vX.Y.Z-N`，其中 `N` 为同一上游版本下的硕米修订号，避免与官方 `v*` 标签冲突：
 
 ```text
-v1.2.0-shuomi.1
-v1.2.0-shuomi.2
-v1.2.1-shuomi.1
+shuomi-v1.2.0-1
+shuomi-v1.2.0-2
+shuomi-v1.2.1-1
 ```
 
 发布步骤：
@@ -119,12 +132,14 @@ v1.2.1-shuomi.1
 ```powershell
 git switch main
 git pull --ff-only origin main
-git tag -a v1.2.0-shuomi.1 -m "硕米ERP 1.2.0 (1)"
-git push origin v1.2.0-shuomi.1
-gh release create v1.2.0-shuomi.1 --title "硕米ERP 1.2.0 (1)" --generate-notes
+git tag -a shuomi-v1.2.0-1 -m "硕米ERP 1.2.0 (1)"
+git push origin shuomi-v1.2.0-1
+gh release create shuomi-v1.2.0-1 --title "硕米ERP 1.2.0 (1)" --generate-notes
 ```
 
-发布 Release 后会触发 `.github/workflows/release.yml`，构建镜像并上传部署包。标签采用 `vX.Y.Z-shuomi.N` 格式，现有的 SemVer 镜像标记逻辑可以识别。
+发布 Release 后触发 `.github/workflows/release.yml`。工作流校验硕米标签，去掉 `shuomi-v` 得到镜像版本 `1.2.0-1`，使用 `shuomi-erp-backend`、`shuomi-erp-web` 和同名部署包。官方 `v*` Release 不触发硕米发布任务。首次带前缀的标签尚未创建；版本号需要按实际发布决定，示例不代表已发布。
+
+本地离线导出脚本的 `-ReleaseTag` 是 Docker 镜像标签，也可使用同一规范化版本，例如 `1.2.0-1`；已有 `release-20261123-203650` 镜像与归档继续可用。
 
 ## GitHub 设置
 
@@ -137,4 +152,4 @@ gh release create v1.2.0-shuomi.1 --title "硕米ERP 1.2.0 (1)" --generate-notes
 - 不要求线性历史。普通功能 PR 可以 Squash，官方同步 PR 必须保留 merge commit。
 - 仓库描述和 README 保留 Lemon ERP / Apache-2.0 上游归属。
 
-如果独立部署镜像，可以把仓库改名为 `shuomi-erp`；改名后更新 `origin` 地址，但继续保留 `upstream`。
+仓库更名为 `shuomi-erp` 时保持 GitHub fork 与 `upstream` 关系。无需长期 `develop` 分支。当前 `main` 保护尚未开启；CI 文件已启用，但 GitHub 暂无运行记录，必须在 PR/主线实际通过后再把对应检查设置为必需。

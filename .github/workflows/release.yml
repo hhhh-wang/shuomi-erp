@@ -1,7 +1,8 @@
-# 发布新版本：在 GitHub 上发布 Release（标签 vX.Y.Z）后自动执行
+# SHUOMI-ERP PRIVATE CUSTOMIZATION: Shuomi-only tags and release names
+# 发布硕米版本：在 GitHub 上发布 Release（标签 shuomi-vX.Y.Z-N）后执行
 #   1. 构建后端、前端镜像（linux/amd64、linux/arm64）推送到 GitHub Packages（ghcr.io）
 #   2. 构建后端 jar、前端静态文件，连同初始化脚本、升级脚本、Docker 部署文件上传到 Release
-name: 发布版本
+name: 发布硕米ERP版本
 
 on:
   release:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 已有的 Release 标签，例如 v1.0.0
+        description: 已有的硕米 Release 标签，例如 shuomi-v1.2.0-1
         required: true
 
 permissions:
@@ -23,6 +24,7 @@ env:
 
 jobs:
   images:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'shuomi-v')
     name: 构建并推送镜像
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -36,6 +38,15 @@ jobs:
             dockerfile: docker/web.Dockerfile
             title: 硕米ERP 前端（Nginx）
     steps:
+      - name: 验证硕米版本标签
+        shell: bash
+        run: |
+          if [[ ! "$TAG" =~ ^shuomi-v[0-9]+[.][0-9]+[.][0-9]+-[0-9]+$ ]]; then
+            echo "::error::标签必须为 shuomi-vX.Y.Z-N，例如 shuomi-v1.2.0-1"
+            exit 1
+          fi
+          printf 'VERSION=%s\n' "${TAG#shuomi-v}" >> "$GITHUB_ENV"
+          printf 'IMAGE_OWNER=%s\n' "${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
         with:
           ref: ${{ env.TAG }}
@@ -49,14 +60,14 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/${{ github.repository_owner }}/lemon-erp-${{ matrix.name }}
+          images: ghcr.io/${{ env.IMAGE_OWNER }}/shuomi-erp-${{ matrix.name }}
           tags: |
-            type=semver,pattern={{version}},value=${{ env.TAG }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ env.TAG }}
+            type=raw,value=${{ env.VERSION }}
             type=raw,value=latest
           labels: |
             org.opencontainers.image.title=${{ matrix.title }}
-            org.opencontainers.image.description=真正 100% 开源、无功能限制的 ERP 系统
+            org.opencontainers.image.description=硕米内部定制 ERP，基于 Lemon ERP 二次开发
+            cn.shuomi.erp.marker=SHUOMI-ERP PRIVATE CUSTOMIZATION
             org.opencontainers.image.licenses=Apache-2.0
       - uses: docker/build-push-action@v7
         with:
@@ -70,10 +81,20 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
 
   assets:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'shuomi-v')
     name: 上传发布文件
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: 验证硕米版本标签
+        shell: bash
+        run: |
+          if [[ ! "$TAG" =~ ^shuomi-v[0-9]+[.][0-9]+[.][0-9]+-[0-9]+$ ]]; then
+            echo "::error::标签必须为 shuomi-vX.Y.Z-N，例如 shuomi-v1.2.0-1"
+            exit 1
+          fi
+          printf 'VERSION=%s\n' "${TAG#shuomi-v}" >> "$GITHUB_ENV"
+          printf 'IMAGE_OWNER=%s\n' "${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
         with:
           ref: ${{ env.TAG }}
@@ -94,23 +115,39 @@ jobs:
         run: npm ci && npm run build
       - name: 打包
         run: |
-          VERSION="${TAG#v}"
           mkdir -p dist
-          cp lemon-admin/build/libs/lemon-erp.jar "dist/lemon-erp-${VERSION}.jar"
-          (cd lemon-web/dist && zip -qr "../../dist/lemon-web-${VERSION}.zip" .)
+          cp lemon-admin/build/libs/lemon-erp.jar "dist/shuomi-erp-backend-${VERSION}.jar"
+          (cd lemon-web/dist && zip -qr "../../dist/shuomi-erp-web-${VERSION}.zip" .)
           cp sql/init.sql dist/init.sql
           (cd sql && zip -qr "../dist/upgrade-sql-${VERSION}.zip" upgrade)
           # Docker 部署包：使用 ghcr.io 上的镜像，解压后进入 docker 目录执行 docker compose up -d
-          mkdir -p "pkg/lemon-erp-docker-${VERSION}/docker" "pkg/lemon-erp-docker-${VERSION}/sql"
-          cp sql/init.sql "pkg/lemon-erp-docker-${VERSION}/sql/"
-          cp -r sql/upgrade "pkg/lemon-erp-docker-${VERSION}/sql/upgrade"
+          mkdir -p "pkg/shuomi-erp-docker-${VERSION}/docker" "pkg/shuomi-erp-docker-${VERSION}/sql" "pkg/shuomi-erp-docker-${VERSION}/docs"
+          cp sql/production-bootstrap.sql "pkg/shuomi-erp-docker-${VERSION}/sql/"
+          cp docs/production-deployment.md "pkg/shuomi-erp-docker-${VERSION}/docs/"
+          cp docker/docker-compose.prod.yml "pkg/shuomi-erp-docker-${VERSION}/docker/"
+          cp sql/init.sql "pkg/shuomi-erp-docker-${VERSION}/sql/"
+          cp -r sql/upgrade "pkg/shuomi-erp-docker-${VERSION}/sql/upgrade"
           # 去掉 build 配置，直接拉取镜像
           sed -e '/^    build:/,/^    image:/{/^    image:/!d;}' -e 's#docker compose up -d --build#docker compose up -d#' \
-              docker/docker-compose.yml > "pkg/lemon-erp-docker-${VERSION}/docker/docker-compose.yml"
-          sed -e "s#^IMAGE_PREFIX=.*#IMAGE_PREFIX=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/lemon-erp#" \
+              docker/docker-compose.yml > "pkg/shuomi-erp-docker-${VERSION}/docker/docker-compose.yml"
+          sed -e "s#^IMAGE_PREFIX=.*#IMAGE_PREFIX=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/shuomi-erp#" \
               -e "s#^IMAGE_TAG=.*#IMAGE_TAG=${VERSION}#" \
-              docker/.env.example > "pkg/lemon-erp-docker-${VERSION}/docker/.env.example"
-          (cd pkg && zip -qr "../dist/lemon-erp-docker-${VERSION}.zip" .)
+              docker/.env.example > "pkg/shuomi-erp-docker-${VERSION}/docker/.env.example"
+          cp "pkg/shuomi-erp-docker-${VERSION}/docker/.env.example" "pkg/shuomi-erp-docker-${VERSION}/docker/.env.local.example"
+          sed -e "s#^IMAGE_PREFIX=.*#IMAGE_PREFIX=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/shuomi-erp#" \
+              -e "s#^IMAGE_TAG=.*#IMAGE_TAG=${VERSION}#" \
+              docker/.env.prod.example > "pkg/shuomi-erp-docker-${VERSION}/docker/.env.prod.example"
+          cat > "pkg/shuomi-erp-docker-${VERSION}/README.md" <<'EOF'
+          # 硕米ERP GHCR 配置部署包
+
+          SHUOMI-ERP PRIVATE CUSTOMIZATION；基于 Lemon ERP（Apache-2.0）。
+          本包包含本地/生产编排和环境模板，镜像由 GHCR 提供，不包含离线 images.tar.gz / images.json。
+          在 docker 目录填写私有环境文件，先执行 docker compose --env-file .env.prod -f docker-compose.prod.yml pull，
+          再执行 docker compose --env-file .env.prod -f docker-compose.prod.yml up -d --no-build --pull never --wait。
+          生产 MySQL 使用外部服务；首次数据库初始化必须单独审查执行。
+          离线初次部署/更新请使用源码仓库 export-init-images.cmd / export-update-images.cmd 导出完整归档。
+          EOF
+          (cd pkg && zip -qr "../dist/shuomi-erp-docker-${VERSION}.zip" .)
           (cd dist && sha256sum * > SHA256SUMS.txt)
           ls -lh dist
       - name: 上传到 Release

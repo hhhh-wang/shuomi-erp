@@ -85,12 +85,29 @@ Docker Desktop 必须使用 Linux 容器，并选择本地 Desktop context。脚
 - `images.tar.gz`：可直接用 Docker/1Panel 导入的镜像归档。
 - `images.json`：版本、镜像ID、平台和归档 SHA256；仅导出 Linux amd64 镜像。
 - `SHA256SUMS`：上传后使用 `sha256sum -c SHA256SUMS` 校验文件。
+- `LICENSE`：沿用上游 Apache-2.0 许可证全文。
 - `docker/`：本地和生产 Compose、无真实凭据的环境示例、`release.env` 发布标签记录。
 - `docs/production-deployment.md`：本操作说明。
 - `scripts/update-production-containers.sh`：上传后可直接运行的服务器更新脚本。
 - 初次包额外含 `mysql:8.0`、`redis:7-alpine`、本地 `sql/init.sql` 和生产空库专用 `sql/production-bootstrap.sql`。
 
 首次包中的 MySQL 镜像和 `sql/init.sql` 仅用于**全新本地测试数据库**；额外的 `sql/production-bootstrap.sql` 是人工确认空库后的生产首次初始化专用文件。生产仅执行生产 Compose，因此导入初次包不会启动 MySQL。更新包不含 Redis/MySQL，需要服务器保留初次部署的 Redis 镜像。导出不会复制真实 `.env`；同名标签指向不同镜像或同名输出目录已存在时会停止，以保留版本可追溯性；已存在且ID相同的目标镜像可直接复用。
+
+## 使用 GitHub Release 的 GHCR 配置包
+
+[硕米 GitHub Releases](https://github.com/hhhh-wang/shuomi-erp/releases) 提供 `shuomi-erp-docker-<版本>.zip` 和 `SHA256SUMS.txt`。下载后对照校验和核验 ZIP；该包包含本地/生产 Compose、环境模板、SQL 和许可证，镜像通过 GHCR 拉取。源码导出脚本生成的离线包另含镜像归档与服务器更新脚本。
+
+解压后在包内 `docker` 目录复制 `.env.prod.example` 为私有 `.env.prod`，填写生产配置，完成独立数据库初始化，再执行：
+
+```bash
+docker compose --env-file .env.prod -f docker-compose.prod.yml config --quiet
+docker compose --env-file .env.prod -f docker-compose.prod.yml pull --policy always
+docker compose --env-file .env.prod -f docker-compose.prod.yml up -d --no-build --pull never --wait --wait-timeout 300
+```
+
+生产 Compose 的 `pull_policy: never` 用于避免启动时意外更换镜像，因此在线安装必须显式 `pull --policy always`。GHCR 包的环境模板已固定 `IMAGE_PREFIX=ghcr.io/hhhh-wang/shuomi-erp` 和版本标签。
+
+更新现有 1Panel 编排时，沿用应用目录的 `.env` 与持久化卷，备份配置，审阅 Compose 变化，再更新 `IMAGE_PREFIX` 和 `IMAGE_TAG`。在该应用目录执行 `docker compose -p shuomi-erp --env-file .env -f compose.yaml pull --policy always backend web`，之后执行 `docker compose -p shuomi-erp --env-file .env -f compose.yaml up -d --no-deps --no-build --pull never --wait --wait-timeout 300 backend web`。保留上一版本镜像和配置，以便按本文回滚步骤恢复。
 
 ## 使用 PowerShell 上传至服务器
 

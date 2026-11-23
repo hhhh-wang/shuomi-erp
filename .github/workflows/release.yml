@@ -1,7 +1,8 @@
 # SHUOMI-ERP PRIVATE CUSTOMIZATION: Shuomi-only tags and release names
-# 发布硕米版本：在 GitHub 上发布 Release（标签 shuomi-vX.Y.Z-N）后执行
+# 发布硕米版本：创建草稿（标签 shuomi-vX.Y.Z-N）、手动构建并验收后发布
 #   1. 构建后端、前端镜像（linux/amd64、linux/arm64）推送到 GitHub Packages（ghcr.io）
 #   2. 构建后端 jar、前端静态文件，连同初始化脚本、升级脚本、Docker 部署文件上传到 Release
+#   3. 发布事件只核验 release-ready.json，不重新构建或覆盖已验收版本
 name: 发布硕米ERP版本
 
 on:
@@ -17,14 +18,40 @@ permissions:
   contents: write
   packages: write
 
+concurrency:
+  group: shuomi-release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
 env:
   NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
   NPM_CONFIG_REPLACE_REGISTRY_HOST: always
   TAG: ${{ github.event.release.tag_name || inputs.tag }}
 
 jobs:
-  images:
+  preflight:
+    name: 检查发布状态
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'shuomi-v')
+    outputs:
+      build: ${{ steps.state.outputs.build }}
+      source-sha: ${{ steps.state.outputs.source-sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - id: state
+        name: 核验草稿和既有产物
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/github-release.mjs prepare
+
+  images:
+    needs: preflight
+    if: needs.preflight.outputs.build == 'true'
     name: 构建并推送镜像
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -49,7 +76,7 @@ jobs:
           printf 'IMAGE_OWNER=%s\n' "${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
         with:
-          ref: ${{ env.TAG }}
+          ref: ${{ needs.preflight.outputs.source-sha }}
       - uses: docker/setup-qemu-action@v4
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
@@ -63,7 +90,6 @@ jobs:
           images: ghcr.io/${{ env.IMAGE_OWNER }}/shuomi-erp-${{ matrix.name }}
           tags: |
             type=raw,value=${{ env.VERSION }}
-            type=raw,value=latest
           labels: |
             org.opencontainers.image.title=${{ matrix.title }}
             org.opencontainers.image.description=硕米内部定制 ERP，基于 Lemon ERP 二次开发
@@ -81,7 +107,8 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
 
   assets:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'shuomi-v')
+    needs: preflight
+    if: needs.preflight.outputs.build == 'true'
     name: 上传发布文件
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -97,7 +124,7 @@ jobs:
           printf 'IMAGE_OWNER=%s\n' "${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
         with:
-          ref: ${{ env.TAG }}
+          ref: ${{ needs.preflight.outputs.source-sha }}
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -116,12 +143,15 @@ jobs:
       - name: 打包
         run: |
           mkdir -p dist
+          cp LICENSE dist/LICENSE
           cp lemon-admin/build/libs/lemon-erp.jar "dist/shuomi-erp-backend-${VERSION}.jar"
+          cp LICENSE lemon-web/dist/LICENSE
           (cd lemon-web/dist && zip -qr "../../dist/shuomi-erp-web-${VERSION}.zip" .)
           cp sql/init.sql dist/init.sql
           (cd sql && zip -qr "../dist/upgrade-sql-${VERSION}.zip" upgrade)
           # Docker 部署包：使用 ghcr.io 上的镜像，解压后进入 docker 目录执行 docker compose up -d
           mkdir -p "pkg/shuomi-erp-docker-${VERSION}/docker" "pkg/shuomi-erp-docker-${VERSION}/sql" "pkg/shuomi-erp-docker-${VERSION}/docs"
+          cp LICENSE "pkg/shuomi-erp-docker-${VERSION}/LICENSE"
           cp sql/production-bootstrap.sql "pkg/shuomi-erp-docker-${VERSION}/sql/"
           cp docs/production-deployment.md "pkg/shuomi-erp-docker-${VERSION}/docs/"
           cp docker/docker-compose.prod.yml "pkg/shuomi-erp-docker-${VERSION}/docker/"
@@ -140,10 +170,11 @@ jobs:
           cat > "pkg/shuomi-erp-docker-${VERSION}/README.md" <<'EOF'
           # 硕米ERP GHCR 配置部署包
 
-          SHUOMI-ERP PRIVATE CUSTOMIZATION；基于 Lemon ERP（Apache-2.0）。
+          SHUOMI-ERP PRIVATE CUSTOMIZATION；基于 [Lemon ERP](https://github.com/MakeSomeFakeNews/lemon-erp)（Apache-2.0）。
+          硕米改动包括部署配置、品牌默认值和发布流程，许可证全文见本包 LICENSE。
           本包包含本地/生产编排和环境模板，镜像由 GHCR 提供，不包含离线 images.tar.gz / images.json。
-          在 docker 目录填写私有环境文件，先执行 docker compose --env-file .env.prod -f docker-compose.prod.yml pull，
-          再执行 docker compose --env-file .env.prod -f docker-compose.prod.yml up -d --no-build --pull never --wait。
+          在 docker 目录填写私有环境文件，先执行 docker compose --env-file .env.prod -f docker-compose.prod.yml pull --policy always，
+          再执行 docker compose --env-file .env.prod -f docker-compose.prod.yml up -d --no-build --pull never --wait --wait-timeout 300。
           生产 MySQL 使用外部服务；首次数据库初始化必须单独审查执行。
           离线初次部署/更新请使用源码仓库 export-init-images.cmd / export-update-images.cmd 导出完整归档。
           EOF
@@ -153,4 +184,22 @@ jobs:
       - name: 上传到 Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload "$TAG" dist/* --clobber
+        run: gh release upload "$TAG" dist/*
+
+  ready:
+    name: 验收并记录发布产物
+    needs: [preflight, images, assets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: needs.preflight.outputs.build == 'true'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preflight.outputs.source-sha }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: 核验校验和和双架构镜像
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/github-release.mjs record

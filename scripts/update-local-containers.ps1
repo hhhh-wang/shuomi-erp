@@ -1,5 +1,5 @@
-# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
-﻿[CmdletBinding()]
+﻿# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
+[CmdletBinding()]
 param(
     [string]$EnvFile = '',
     [ValidatePattern('^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$')][string]$ReleaseTag = '',

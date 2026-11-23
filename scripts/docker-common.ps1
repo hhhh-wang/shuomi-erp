@@ -1,5 +1,5 @@
-# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
-﻿# Shared Docker Desktop helpers for the Windows deployment entry points.
+﻿# SHUOMI-ERP PRIVATE CUSTOMIZATION: production/local deployment
+# Shared Docker Desktop helpers for the Windows deployment entry points.
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 $script:TaskDockerHost = ''

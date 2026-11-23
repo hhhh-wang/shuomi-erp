@@ -26,6 +26,7 @@ ENV TZ=Asia/Shanghai \
     LEMON_UPLOAD_ATTACHMENTPATH=/data/attachments \
     JAVA_OPTS="-Xms512m -Xmx1g"
 WORKDIR /app
+COPY LICENSE /app/licenses/LICENSE
 COPY --from=build /src/lemon-admin/build/libs/lemon-erp.jar /app/lemon-erp.jar
 VOLUME ["/data"]
 EXPOSE 8080

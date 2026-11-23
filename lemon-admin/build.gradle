@@ -33,6 +33,10 @@ tasks.named('bootRun') {
 
 tasks.named('bootJar') {
     archiveFileName = 'lemon-erp.jar'
+    // SHUOMI-ERP PRIVATE CUSTOMIZATION: preserve the upstream license in standalone distributions
+    from(rootProject.file('LICENSE')) {
+        into 'META-INF'
+    }
 }
 // 只需要可执行 jar
 tasks.named('jar') {

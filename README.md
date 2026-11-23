@@ -429,6 +429,8 @@ lemon-erp
 
 本项目基于 [Lemon ERP](https://github.com/MakeSomeFakeNews/lemon-erp) 二次开发，遵循 Apache-2.0 协议，保留原项目的版权声明与许可证。上游问题可在 [Lemon ERP Issues](https://github.com/MakeSomeFakeNews/lemon-erp/issues) 中反馈。
 
+分支模型、官方代码同步、冲突处理和发布流程见 [上游同步与二开分支规范](docs/upstream-sync.md)。
+
 ## 真正 100% 开源
 
 硕米ERP 不是「开源版 + 商业版」的模式，演示环境和文档中看到的全部功能，都在本仓库中完整开源：
